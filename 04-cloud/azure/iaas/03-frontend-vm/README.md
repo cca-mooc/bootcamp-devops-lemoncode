@@ -70,7 +70,7 @@ az vm run-command invoke \
 --name $FRONTEND_VM_NAME \
 --command-id RunPowerShellScript \
 --scripts @04-cloud/azure/iaas/scripts/install-tour-of-heroes-angular.ps1 \
---parameters "api_url=http://$FQDN_API_VM/api/hero" "release_url=https://github.com/0GiS0/tour-of-heroes-angular/releases/download/1.1.4/dist.zip"
+--parameters "api_url=http://$FQDN_API_VM/api/hero" "release_url=https://github.com/0GiS0/tour-of-heroes-angular/releases/download/v3.16.0/dist.zip"
 ```
 
 o si estás en Windows:
@@ -83,7 +83,7 @@ az vm run-command invoke `
 --name $FRONTEND_VM_NAME `
 --command-id RunPowerShellScript `
 --scripts @scripts/install-tour-of-heroes-angular.ps1 `
---parameters "api_url=http://$FQDN_API_VM/api/hero" "release_url=https://github.com/0GiS0/tour-of-heroes-angular/releases/download/1.1.4/dist.zip"
+--parameters "api_url=http://$FQDN_API_VM/api/hero" "release_url=https://github.com/0GiS0/tour-of-heroes-angular/releases/download/v3.16.0/dist.zip"
 ```
 
 En este ejemplo he desplegado la aplicación en otro puerto, en el 8080, para que no haya conflicto con el IIS que se instala por defecto en el puerto 80. Para ello utilizamos el script [install-tour-of-heroes-angular.ps1](04-cloud/azure/iaas/scripts/install-tour-of-heroes-angular.ps1) que se encuentra en la carpeta **scripts** de este repositorio.
