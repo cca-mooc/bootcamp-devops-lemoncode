@@ -139,6 +139,8 @@ az webapp deployment source config-zip \
 --src site.zip \
 --resource-group $RESOURCE_GROUP \
 --name $WEB_API_NAME
+
+
 ```
 
 **En Windows PowerShell:**
@@ -173,7 +175,7 @@ Una vez completado, verifica que todo funcionó correctamente:
 
 ```bash
 echo "✅ API deployed successfully!"
-echo "📍 API URL: https://$WEB_API_NAME.azurewebsites.net"
+echo "📍 API URL: https://$WEB_API_NAME.azurewebsites.net/api/hero"
 ```
 
 ## ➡️ Siguiente paso
