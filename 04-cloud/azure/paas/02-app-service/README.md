@@ -67,7 +67,7 @@ Ahora que tienes el plan, crea la web app:
 ```bash
 az webapp create \
 --name $WEB_API_NAME \
---runtime "dotnet:8" \
+--runtime "dotnet:9" \
 --resource-group $RESOURCE_GROUP \
 --plan $APP_SVC_PLAN_NAME
 ```

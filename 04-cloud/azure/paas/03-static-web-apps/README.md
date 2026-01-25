@@ -24,7 +24,7 @@ Necesitas un **fork** del repositorio de Tour of Heroes Angular:
 ```bash
 # Static Web App variables
 WEB_APP_NAME="tour-of-heroes-web-$RANDOM"
-GITHUB_USER_NAME="<YOUR-GITHUB-USER-NAME>"
+GITHUB_USER_NAME="0gis0"
 ```
 
 **En Windows PowerShell:**
@@ -47,7 +47,7 @@ az staticwebapp create \
 --location "westeurope" \
 --branch main \
 --app-location "/" \
---output-location "dist/angular-tour-of-heroes" \
+--output-location "dist/angular-tour-of-heroes/browser" \
 --login-with-github
 ```
 

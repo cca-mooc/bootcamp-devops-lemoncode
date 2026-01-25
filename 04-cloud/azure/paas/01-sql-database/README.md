@@ -85,7 +85,9 @@ az sql server firewall-rule create `
 
 ## 🔗 Paso 4: Verificar la conexión (Opcional)
 
-Con [Azure Data Studio](https://azure.microsoft.com/es-es/products/data-studio) puedes conectarte a tu base de datos para verificar que se creó correctamente. Recuerda que deberás permitir el acceso desde tu IP en las reglas de firewall.
+Con la extensión de SQL Server para Visual Studio Code, puedes conectarte a tu servidor SQL y verificar que todo esté funcionando correctamente.
+
+![Probar conexión con la extensión de SQL Server para Visual Studio Code](../images/Probar%20conexión%20con%20la%20extensión%20de%20SQL%20Server%20para%20Visual%20Studio%20Code.png)
 
 ## ➡️ Siguiente paso
 
