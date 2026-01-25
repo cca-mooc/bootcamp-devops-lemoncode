@@ -17,7 +17,7 @@ Una vez hecho esto, te recomiendo que setees algunas variables de entorno para q
 ```bash
 # 📋 Variables generales
 RESOURCE_GROUP="tour-of-heroes-on-vms"
-LOCATION="spaincentral"
+LOCATION="austriaeast"
 ```
 
 o si estás en Windows con PowerShell:

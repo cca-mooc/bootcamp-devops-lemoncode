@@ -10,7 +10,7 @@ API_VM_IMAGE="Ubuntu2204"
 API_VM_ADMIN_USERNAME="apiadmin"
 API_VM_ADMIN_PASSWORD="Api@dmin-1232"
 API_VM_NSG_NAME="api-vm-nsg"
-VM_SIZE="Standard_B1ms"
+VM_SIZE="Standard_DS1_v2"
 ```
 
 o si estás en Windows:
@@ -23,6 +23,7 @@ $API_VM_IMAGE="Ubuntu2204"
 $API_VM_ADMIN_USERNAME="apiadmin"
 $API_VM_ADMIN_PASSWORD="Api@dmin1232!"
 $API_VM_NSG_NAME="api-vm-nsg"
+$VM_SIZE="Standard_DS1_v2"
 ```
 
 Ahora con estas vamos a crear la máquina virtual de la misma forma que lo hicimos con la base de datos:
@@ -69,26 +70,26 @@ Sin embargo, con esto solo no basta ya que por ahora sólo tenemos la máquina v
 
 ```bash
 # https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-7.0&tabs=linux-ubuntu
-echo -e "⚙️ Ejecutando script para instalar Nginx, .NET Core y la API"
+echo -e "⚙️ Ejecutando script para instalar Nginx, .NET 9 y la API"
 az vm run-command invoke \
 --resource-group $RESOURCE_GROUP \
 --name $API_VM_NAME \
 --command-id RunShellScript \
 --scripts @04-cloud/azure/iaas/scripts/install-tour-of-heroes-api.sh \
---parameters https://github.com/0GiS0/tour-of-heroes-dotnet-api/releases/download/1.0.5/drop.zip $FQDN_API_VM $DB_VM_ADMIN_USERNAME $DB_VM_ADMIN_PASSWORD
+--parameters https://github.com/0GiS0/tour-of-heroes-dotnet-api/releases/download/v1.1.0/tour-of-heroes-api.zip $FQDN_API_VM $DB_PRIVATE_IP $POSTGRES_DB $POSTGRES_USER $POSTGRES_PASSWORD
 ```
 
 o si estás en Windows:
 
 ```pwsh
 # https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-7.0&tabs=linux-ubuntu
-echo -e "⚙️ Ejecutando script para instalar Nginx, .NET Core y la API"
+echo -e "⚙️ Ejecutando script para instalar Nginx, .NET 9 y la API"
 az vm run-command invoke `
 --resource-group $RESOURCE_GROUP `
 --name $API_VM_NAME `
 --command-id RunShellScript `
 --scripts @04-cloud/azure/iaas/scripts/install-tour-of-heroes-api.sh `
---parameters https://github.com/0GiS0/tour-of-heroes-dotnet-api/releases/download/1.0.5/drop.zip $FQDN_API_VM $DB_VM_ADMIN_USERNAME $DB_VM_ADMIN_PASSWORD
+--parameters https://github.com/0GiS0/tour-of-heroes-dotnet-api/releases/download/v1.1.0/tour-of-heroes-api.zip $FQDN_API_VM $DB_PRIVATE_IP $POSTGRES_DB $POSTGRES_USER $POSTGRES_PASSWORD
 ```
 
 Con este comando estamos ejecutando un script que se encuentra en la carpeta **scripts** de este repositorio. El mismo se encarga de instalar Nginx, .NET Core, desplegar la API y crear un servicio que la mantenga en ejecución. Si quieres ver el contenido del script puedes hacerlo [aquí](04-cloud/azure/iaas/scripts/install-tour-of-heroes-api.sh).

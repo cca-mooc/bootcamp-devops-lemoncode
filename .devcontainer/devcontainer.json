@@ -43,7 +43,8 @@
 				"humao.rest-client",
 				"GitHub.copilot-chat",
 				"ms-dotnettools.csdevkit",
-				"ms-vscode.PowerShell"
+				"ms-vscode.PowerShell",
+				"cweijan.vscode-postgresql-client2"
 			]
 		}
 	}

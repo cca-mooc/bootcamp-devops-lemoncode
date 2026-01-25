@@ -10,7 +10,7 @@ FRONTEND_VM_IMAGE="MicrosoftWindowsServer:WindowsServer:2019-Datacenter-Core:177
 FRONTEND_VM_ADMIN_USERNAME="frontendadmin"
 FRONTEND_VM_ADMIN_PASSWORD="fr0nt#nd@dmin123"
 FRONTEND_VM_NSG_NAME="frontend-vm-nsg"
-VM_SIZE="Standard_B1ms"
+VM_SIZE="Standard_DS1_v2"
 ```
 
 o si estás en Windows:
@@ -18,10 +18,11 @@ o si estás en Windows:
 ```pwsh
 # 🎨 VM del Frontend en Azure
 $FRONTEND_VM_NAME="frontend-vm"
-$FRONTEND_VM_IMAGE="MicrosoftWindowsServer:WindowsServer:2016-Datacenter:latest"
+$FRONTEND_VM_IMAGE="MicrosoftWindowsServer:WindowsServer:2019-Datacenter-Core:17763.8027.251112"
 $FRONTEND_VM_ADMIN_USERNAME="frontendadmin"
 $FRONTEND_VM_ADMIN_PASSWORD="fr0nt#nd@dmin123"
 $FRONTEND_VM_NSG_NAME="frontend-vm-nsg"
+$VM_SIZE="Standard_DS1_v2"
 ```
 
 Con ellas ya podemos crear la máquina virtual de la misma forma que el resto:

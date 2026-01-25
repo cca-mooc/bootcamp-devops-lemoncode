@@ -1,8 +1,8 @@
 echo -e "🌐 Instalando servidor Nginx"
 sudo apt update && sudo apt install -y nginx unzip
 
-echo -e "⚙️ Instalando .NET Core"
-wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && sudo dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb && sudo apt-get update && sudo apt-get install -y aspnetcore-runtime-7.0
+echo -e "⚙️ Instalando .NET 9"
+wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && sudo dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb && sudo apt-get update && sudo apt-get install -y aspnetcore-runtime-9.0
 
 systemctl status nginx
 
@@ -57,7 +57,9 @@ SyslogIdentifier=dotnet-tour-of-heroes-api
 User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Development
 Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
-Environment=ConnectionStrings__DefaultConnection='Server=192.168.1.4,1433;Initial Catalog=heroes;Persist Security Info=False;User ID=$3;Password=$4;TrustServerCertificate=True'
+# 🐘 PostgreSQL como base de datos
+Environment=DATABASE_PROVIDER=PostgreSQL
+Environment=ConnectionStrings__PostgreSQL='Host=$3;Port=5432;Database=$4;Username=$5;Password=$6'
 
 [Install]
 WantedBy=multi-user.target
