@@ -1,3 +1,25 @@
+#!/bin/bash
+# =============================================================================
+# 🚀 Script de instalación de Tour of Heroes API
+# =============================================================================
+# Parámetros:
+#   $1 - URL del zip de la API
+#   $2 - FQDN del servidor (para Nginx)
+#   $3 - Tipo de base de datos: "PostgreSQL" o "SqlServer"
+#   $4 - Host/IP de la base de datos
+#   $5 - Nombre de la base de datos
+#   $6 - Usuario de la base de datos
+#   $7 - Contraseña de la base de datos
+# =============================================================================
+
+API_URL=$1
+SERVER_FQDN=$2
+DB_PROVIDER=$3
+DB_HOST=$4
+DB_NAME=$5
+DB_USER=$6
+DB_PASSWORD=$7
+
 echo -e "🌐 Instalando servidor Nginx"
 sudo apt update && sudo apt install -y nginx unzip
 
@@ -12,7 +34,7 @@ sudo chown -R $USER:$USER /var/www/tour-of-heroes-api
 sudo chmod -R 755 /var/www/tour-of-heroes-api
 
 echo -e "📥 Descargando la API desde GitHub"
-wget $1 -O drop.zip
+wget $API_URL -O drop.zip
 
 echo -e "📦 Descomprimiendo la aplicación"
 unzip drop.zip -d /var/www/tour-of-heroes-api
@@ -20,7 +42,7 @@ unzip drop.zip -d /var/www/tour-of-heroes-api
 sudo sed -i 's/# server_names_hash_bucket_size 64;/server_names_hash_bucket_size 128;/g' /etc/nginx/nginx.conf
 
 echo -e "⚙️ Configurando Nginx como proxy inverso"
-sudo SERVER_NAME=$2 bash -c 'cat > /etc/nginx/sites-available/tour-of-heroes-api.conf <<EOF
+sudo SERVER_NAME=$SERVER_FQDN bash -c 'cat > /etc/nginx/sites-available/tour-of-heroes-api.conf <<EOF
 server {
      listen        80;
      server_name   $SERVER_NAME;
@@ -43,6 +65,18 @@ sudo nginx -t
 sudo systemctl restart nginx
 
 echo -e "🔧 Creando servicio de systemd para la API"
+
+# Configurar la cadena de conexión según el proveedor de base de datos
+if [ "$DB_PROVIDER" == "PostgreSQL" ]; then
+    echo -e "🐘 Configurando conexión a PostgreSQL"
+    CONNECTION_STRING="Host=$DB_HOST;Port=5432;Database=$DB_NAME;Username=$DB_USER;Password=$DB_PASSWORD"
+    CONNECTION_VAR="ConnectionStrings__PostgreSQL"
+else
+    echo -e "🗄️ Configurando conexión a SQL Server"
+    CONNECTION_STRING="Server=$DB_HOST,1433;Initial Catalog=$DB_NAME;Persist Security Info=False;User ID=$DB_USER;Password=$DB_PASSWORD;TrustServerCertificate=True"
+    CONNECTION_VAR="ConnectionStrings__SqlServer"
+fi
+
 sudo bash -c "cat <<EOF > /etc/systemd/system/tour-of-heroes-api.service
 [Unit]
 Description=Tour of heroes .NET Web API App running on Ubuntu
@@ -57,9 +91,8 @@ SyslogIdentifier=dotnet-tour-of-heroes-api
 User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Development
 Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
-# 🐘 PostgreSQL como base de datos
-Environment=DATABASE_PROVIDER=PostgreSQL
-Environment=ConnectionStrings__PostgreSQL='Host=$3;Port=5432;Database=$4;Username=$5;Password=$6'
+Environment=DATABASE_PROVIDER=$DB_PROVIDER
+Environment=$CONNECTION_VAR='$CONNECTION_STRING'
 
 [Install]
 WantedBy=multi-user.target

@@ -5,7 +5,8 @@
 # Este script automatiza la instalación de PostgreSQL en Ubuntu y lo configura
 # para aceptar conexiones remotas desde la subred de la API.
 #
-# Uso: sudo ./setup-postgresql.sh
+# Uso: sudo ./setup-postgresql.sh [API_SUBNET]
+# Ejemplo: sudo ./setup-postgresql.sh 192.168.2.0/24
 # =============================================================================
 
 set -e  # Salir si hay errores
@@ -14,7 +15,9 @@ set -e  # Salir si hay errores
 POSTGRES_USER="heroesadmin"
 POSTGRES_PASSWORD="Heroes@2024#"
 POSTGRES_DB="heroes"
-API_SUBNET="10.0.2.0/24"
+
+# Subred de la API (parámetro opcional, por defecto toda la VNet)
+API_SUBNET=${1:-"0.0.0.0/0"}
 
 echo "=============================================="
 echo "🐘 Instalación y configuración de PostgreSQL"

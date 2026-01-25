@@ -66,33 +66,74 @@ $FQDN_API_VM=az vm create `
 echo -e "✅ VM de API creada"
 ```
 
-Sin embargo, con esto solo no basta ya que por ahora sólo tenemos la máquina virtual pero no está ni configurada para poder hospedar mi API en .NET ni configurado ningún servidor web que la sirva. Para ello vamos a hacer uso del subcomando **run-command** de la CLI de Azure. Este nos permite ejecutar comandos en la máquina virtual de forma remota:
+Sin embargo, con esto solo no basta ya que por ahora sólo tenemos la máquina virtual pero no está ni configurada para poder hospedar mi API en .NET ni configurado ningún servidor web que la sirva. Para ello vamos a hacer uso del subcomando **run-command** de la CLI de Azure. Este nos permite ejecutar comandos en la máquina virtual de forma remota.
+
+## 🗄️ Configuración según el tipo de base de datos
+
+El script de instalación soporta tanto **PostgreSQL** como **SQL Server**. Dependiendo de qué opción elegiste en el paso anterior, usa el comando correspondiente:
+
+### 🐘 Opción A: Si usaste PostgreSQL (Ubuntu)
 
 ```bash
 # https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-7.0&tabs=linux-ubuntu
-echo -e "⚙️ Ejecutando script para instalar Nginx, .NET 9 y la API"
+echo -e "⚙️ Ejecutando script para instalar Nginx, .NET 9 y la API (PostgreSQL)"
 az vm run-command invoke \
 --resource-group $RESOURCE_GROUP \
 --name $API_VM_NAME \
 --command-id RunShellScript \
 --scripts @04-cloud/azure/iaas/scripts/install-tour-of-heroes-api.sh \
---parameters https://github.com/0GiS0/tour-of-heroes-dotnet-api/releases/download/v1.1.0/tour-of-heroes-api.zip $FQDN_API_VM $DB_PRIVATE_IP $POSTGRES_DB $POSTGRES_USER $POSTGRES_PASSWORD
+--parameters https://github.com/0GiS0/tour-of-heroes-dotnet-api/releases/download/v1.1.0/tour-of-heroes-api.zip $FQDN_API_VM PostgreSQL $DB_PRIVATE_IP $POSTGRES_DB $POSTGRES_USER $POSTGRES_PASSWORD
 ```
 
 o si estás en Windows:
 
 ```pwsh
 # https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-7.0&tabs=linux-ubuntu
-echo -e "⚙️ Ejecutando script para instalar Nginx, .NET 9 y la API"
+echo -e "⚙️ Ejecutando script para instalar Nginx, .NET 9 y la API (PostgreSQL)"
 az vm run-command invoke `
 --resource-group $RESOURCE_GROUP `
 --name $API_VM_NAME `
 --command-id RunShellScript `
 --scripts @04-cloud/azure/iaas/scripts/install-tour-of-heroes-api.sh `
---parameters https://github.com/0GiS0/tour-of-heroes-dotnet-api/releases/download/v1.1.0/tour-of-heroes-api.zip $FQDN_API_VM $DB_PRIVATE_IP $POSTGRES_DB $POSTGRES_USER $POSTGRES_PASSWORD
+--parameters https://github.com/0GiS0/tour-of-heroes-dotnet-api/releases/download/v1.1.0/tour-of-heroes-api.zip $FQDN_API_VM PostgreSQL $DB_PRIVATE_IP $POSTGRES_DB $POSTGRES_USER $POSTGRES_PASSWORD
 ```
 
-Con este comando estamos ejecutando un script que se encuentra en la carpeta **scripts** de este repositorio. El mismo se encarga de instalar Nginx, .NET Core, desplegar la API y crear un servicio que la mantenga en ejecución. Si quieres ver el contenido del script puedes hacerlo [aquí](04-cloud/azure/iaas/scripts/install-tour-of-heroes-api.sh).
+### 🪟 Opción B: Si usaste SQL Server (Windows)
+
+```bash
+# https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-7.0&tabs=linux-ubuntu
+echo -e "⚙️ Ejecutando script para instalar Nginx, .NET 9 y la API (SQL Server)"
+az vm run-command invoke \
+--resource-group $RESOURCE_GROUP \
+--name $API_VM_NAME \
+--command-id RunShellScript \
+--scripts @04-cloud/azure/iaas/scripts/install-tour-of-heroes-api.sh \
+--parameters https://github.com/0GiS0/tour-of-heroes-dotnet-api/releases/download/v1.1.0/tour-of-heroes-api.zip $FQDN_API_VM SqlServer $DB_PRIVATE_IP heroes $DB_VM_ADMIN_USERNAME $DB_VM_ADMIN_PASSWORD
+```
+
+o si estás en Windows:
+
+```pwsh
+# https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-7.0&tabs=linux-ubuntu
+echo -e "⚙️ Ejecutando script para instalar Nginx, .NET 9 y la API (SQL Server)"
+az vm run-command invoke `
+--resource-group $RESOURCE_GROUP `
+--name $API_VM_NAME `
+--command-id RunShellScript `
+--scripts @04-cloud/azure/iaas/scripts/install-tour-of-heroes-api.sh `
+--parameters https://github.com/0GiS0/tour-of-heroes-dotnet-api/releases/download/v1.1.0/tour-of-heroes-api.zip $FQDN_API_VM SqlServer $DB_PRIVATE_IP heroes $DB_VM_ADMIN_USERNAME $DB_VM_ADMIN_PASSWORD
+```
+
+> 📝 **Nota**: Los parámetros del script son:
+> 1. URL del zip de la API
+> 2. FQDN del servidor
+> 3. Tipo de base de datos (`PostgreSQL` o `SqlServer`)
+> 4. Host/IP de la base de datos
+> 5. Nombre de la base de datos
+> 6. Usuario
+> 7. Contraseña
+
+Con este comando estamos ejecutando un script que se encuentra en la carpeta **scripts** de este repositorio. El mismo se encarga de instalar Nginx, .NET 9, desplegar la API y crear un servicio que la mantenga en ejecución. Si quieres ver el contenido del script puedes hacerlo [aquí](../scripts/install-tour-of-heroes-api.sh).
 
 Por último necesitamos crear una **network security rule** para permitir el acceso a través del puerto 80 a la API:
 
