@@ -7,12 +7,29 @@ Es común que cuando trabajamos con Azure Kubernetes Services también utilicemo
 Lo primero que vamos a hacer es crearnos un recurso de este tipo, en el mismo grupo de recursos donde tenemos nuestro clúster:
 
 ```bash
-RESOURCE_GROUP="bootcamp-lemoncode"
 ACR_NAME="lemoncodeacr$RANDOM"
 LOCATION="spaincentral"
 
 az acr create -n ${ACR_NAME} -g ${RESOURCE_GROUP} --sku Basic --location ${LOCATION}
 ```
+
+> ⚠️ **Nota importante**: Si es la primera vez que creas un Azure Container Registry en tu suscripción, es posible que necesites registrar el proveedor de recursos `Microsoft.ContainerRegistry`. Te darás cuenta porque te encontrarás este error:
+>
+> ![Error al intentar crear un Azure Container Registry](images/Error%20al%20intentar%20crear%20un%20ACR.png)
+>
+> Puedes hacerlo con el siguiente comando:
+>
+> ```bash
+> az provider register --namespace Microsoft.ContainerRegistry
+> ```
+>
+> Puedes comprobar el estado del registro con:
+>
+> ```bash
+> az provider show --namespace Microsoft.ContainerRegistry --query "registrationState" -o tsv
+> ```
+>
+> Espera hasta que el estado sea `Registered` antes de continuar con la creación del ACR.
 
 Una vez que ya lo tienes, en este se pueden o bien generar imágenes en local y luego publicarlas:
 
@@ -33,13 +50,15 @@ Esto además significa que no necesitas tener Docker instalado en tu máquina, y
 az acr build -r ${ACR_NAME} -t ${ACR_NAME}.azurecr.io/hello-lemoncode:linux-arm 04-cloud/00-aks/02-azure-container-registry --platform linux/arm/v7
 ```
 
+> Nota: esta capacidad no está disponible en el plan gratuito. Pero puedes hacer push de tu imagen local
+
+docker push ${ACR_NAME}.azurecr.io/hello-world:v1 
+
 ## Usar el Azure Container Registry en AKS
 
 Lo chulo de todo esto es que AKS ya viene preparado para trabajar con ACR, por lo que no necesitas hacer nada especial para que funcione. Lo único que tienes que hacer es decirle a tu clúster que use tu ACR:
 
 ```bash
-AKS_NAME="lemoncode-cluster"
-
 az aks update -n ${AKS_NAME} -g ${RESOURCE_GROUP} --attach-acr ${ACR_NAME}
 ```
 
@@ -55,4 +74,6 @@ echo "La última imagen de hello-world es ${LAST_TAG}"
 kubectl run hello-lemoncode --image=${ACR_NAME}.azurecr.io/hello-world:${LAST_TAG}
 
 kubectl get pods -w
+
+kubectl logs hello-lemoncode
 ```
