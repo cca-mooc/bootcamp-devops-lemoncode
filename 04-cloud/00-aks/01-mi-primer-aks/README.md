@@ -33,6 +33,20 @@ az aks create -g ${RESOURCE_GROUP} \
 --generate-ssh-keys
 ```
 
+> ⚠️ **Nota importante**: Si es la primera vez que creas un clúster de AKS en tu suscripción, es posible que necesites registrar el proveedor de recursos `Microsoft.ContainerService`. Puedes hacerlo con el siguiente comando:
+>
+> ```bash
+> az provider register --namespace Microsoft.ContainerService
+> ```
+>
+> Puedes comprobar el estado del registro con:
+>
+> ```bash
+> az provider show --namespace Microsoft.ContainerService --query "registrationState" -o tsv
+> ```
+>
+> Espera hasta que el estado sea `Registered` antes de continuar con la creación del clúster.
+
 Como puedes ver, crear un clúster de AKS es extremadamente sencillo. Obviamente se pueden añadir más opciones durante su creación, pero oye, para ser tu primer clúster es más que suficiente 😉
 
 Una vez que finalice la creación lo siguiente que necesitas es instalar `kubectl` si no lo tienes todavía. Azure CLI también puede ayudarte en esta tarea usando este comando:

@@ -16,7 +16,7 @@ spec:
         app: tour-of-heroes-web
     spec:
       containers:
-      - image: ghcr.io/0gis0/tour-of-heroes-angular:main
+      - image: ghcr.io/0gis0/tour-of-heroes-angular@sha256:b1c75a464596c2b5771cd659305d80b696e940fabc2519bedb8d49b7c914644c
         name: tour-of-heroes-web
         env:
           - name: API_URL
