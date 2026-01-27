@@ -48,8 +48,7 @@ az vm create \
 --vnet-name $VNET_NAME \
 --subnet $DB_SUBNET_NAME \
 --size $VM_SIZE \
---nsg $DB_VM_NSG_NAME \
---public-ip-address ""
+--nsg $DB_VM_NSG_NAME
 
 echo -e "✅ Máquina virtual creada"
 ```
@@ -208,16 +207,16 @@ postgresql://heroesadmin:Heroes@2024#@$DB_PRIVATE_IP:5432/heroes
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    Virtual Network                       │
-│                                                          │
+│                    Virtual Network                      │
+│                                                         │
 │  ┌────────────────────┐    ┌────────────────────┐       │
 │  │   API Subnet       │    │   DB Subnet        │       │
-│  │   10.0.2.0/24     │    │   10.0.1.0/24      │       │
+│  │   192.168.2.0/24   │    │   192.168.1.0/24   │       │
 │  │                    │    │                    │       │
-│  │  ┌──────────────┐ │    │  ┌──────────────┐  │       │
-│  │  │   API VM     │ │───▶│  │   DB VM      │  │       │
-│  │  │              │ │    │  │   Ubuntu     │  │       │
-│  │  └──────────────┘ │    │  │   PostgreSQL │  │       │
+│  │  ┌──────────────┐  │    │  ┌──────────────┐  │       │
+│  │  │   API VM     │  │───▶│  │   DB VM      │  │       │
+│  │  │              │  │    │  │   Ubuntu     │  │       │
+│  │  └──────────────┘  │    │  │   PostgreSQL │  │       │
 │  │                    │    │  │   :5432      │  │       │
 │  └────────────────────┘    │  └──────────────┘  │       │
 │                            │   (Sin IP pública) │       │
