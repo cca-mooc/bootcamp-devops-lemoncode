@@ -29,9 +29,10 @@ docker run -d -p 27017:27017 \
   mongo:7
 ```
 
-Connect to an app tier instance, for example `app1`
+> Grab db intance private DNS from console. 
 
-Ping to db instance using the private DNS
+Ping to db instance using the private DNS. Connect to an app tier instance, for example `app1`:
+
 
 ```bash
 nslookup ip-172-31-101-99.eu-west-3.compute.internal
@@ -58,6 +59,7 @@ telnet ip-172-31-101-99.eu-west-3.compute.internal 27017
 
 ```bash
 docker run -d -p 8080:3000 \
+  -h app1 \
   -e MONGODB_URI=mongodb://admin:password@ip-172-31-101-99.eu-west-3.compute.internal:27017/tododb?authSource=admin \
   jaimesalas/todo-app-api:4
 ```
