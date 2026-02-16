@@ -4,7 +4,7 @@
 
 We're going to simulate a major slowdown in our web application and then configure an idle timeout and see how that affects our experience as a client. Here we are at the web app, and what I'm going to do is browse to a special page called shortdelay.py. 
 
-Now this page does something rather strange. Once I hit Enter and the web server receives the HTTP GET request, it literally sits there and waits for 15 seconds. After 15 seconds, it displays the web server name. Now you might be like, that's weird Ben, what's the point of that? Well the point is that during that 15 seconds we had an open TCP connection to the load balancer, and that connection was idle. You see where I'm going with this? 
+Now this page does something rather strange. Once I hit Enter and the web server receives the HTTP GET request, it literally sits there and waits for 15 seconds. After 15 seconds, it displays the web server name. Now you might be like, that's weird, what's the point of that? Well the point is that during that 15 seconds we had an open TCP connection to the load balancer, and that connection was idle. You see where I'm going with this? 
 
 Let's jump back over to the EC2 service console and take a look at our load balancers. All right, let's select the `web‑lb` load balancer, click on the Description tab, and scroll all the way to the bottom to Attributes. Now, there is our idle timeout, 60 seconds. Go ahead and click on Edit attributes please, and we're going to change the idle timeout to 10 seconds and then click Save. 
 

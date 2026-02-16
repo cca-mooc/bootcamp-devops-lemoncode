@@ -42,4 +42,4 @@ Now the front end of the web app is configured to display information about the 
 
 Open dev tools, the cookie information is also blank because we, the client, have not sent any cookie.
 
-> Browse using `https://<your ip>`
+> Browse using `http://<your ip>`

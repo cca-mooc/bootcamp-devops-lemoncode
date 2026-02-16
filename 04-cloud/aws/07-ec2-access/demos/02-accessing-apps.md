@@ -67,11 +67,11 @@ When I try to hit the public IP of the (previous) Linux machine, my request time
 
 Let's **add a rule to allow HTTP traffic on port 80 from the security group.** 
 
-[Select default sg](./.resources/accessing/04.png)
+![Select default sg](./.resources/accessing/04.png)
 
 We'll label that the security group we've selected as a source is the default security group and save this rule. 
 
-[Update default sg](./.resources/accessing/05.png)
+![Update default sg](./.resources/accessing/05.png)
 
 Now when we refresh the request, we can see the welcome page as expected. 
 
@@ -83,6 +83,6 @@ Now I'll try accessing the page **from a machine that is not in the security gro
 
 If we go in and edit the security group rule again and make it available to all IP addresses, when I go back and try again, I can see the page.
 
-[Update default sg](./.resources/accessing/06.png)
+![Update default sg](./.resources/accessing/06.png)
 
-[Update default sg](./.resources/accessing/07.png)
+![Update default sg](./.resources/accessing/07.png)

@@ -92,6 +92,10 @@ sudo systemctl enable docker
 sudo usermod -aG docker $USER
 ```
 
+- `sudo systemctl start docker`: Immedietly starts the Docker/service daemon, this makes Docker available for use right away
+- `sudo systemctl enable docker`: Configures Docker to automatically start when the system boots up. This ensures Docker will be running after system restarts
+- `sudo usermod -aG docker $USER`: We are adding the current user `ec2-user` to the Docker group.
+
 ```bash
 docker run -d -p 80:80 nginx
 ```
